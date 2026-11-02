@@ -1,0 +1,69 @@
+
+# ==========================================================
+# SUPER-LINTER GITHUB ACTIONS WORKFLOW
+# Automatically checks the repository for code-quality issues.
+# ==========================================================
+
+name: Lint Code Base
+
+# Run whenever code is pushed or a pull request is created or updated.
+on:
+  push:
+  pull_request:
+
+# Permissions required by the workflow.
+permissions:
+  contents: write
+  statuses: write
+
+jobs:
+  build:
+    # Name displayed in GitHub Actions.
+    name: Lint Code Base
+
+    # Run checks on Ubuntu.
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Download repository files.
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2. Run Super-Linter.
+      - name: Lint Code Base
+        uses: super-linter/super-linter@v7
+        env:
+          # Check every file in the repository.
+          VALIDATE_ALL_CODEBASE: true
+
+          # Automatically identify the default branch.
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+
+          # GitHub authentication token.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          # 1. Check Bash scripts.
+          VALIDATE_BASH: true
+
+          # 2. Check executable Bash scripts.
+          VALIDATE_BASH_EXEC: true
+
+          # 3. Check infrastructure files.
+          VALIDATE_CHECKOV: true
+
+          # 4. Detect accidentally committed secrets.
+          VALIDATE_GITLEAKS: true
+
+          # 5. Detect Git merge conflict markers.
+          VALIDATE_GIT_MERGE_CONFLICT_MARKERS: true
+
+          # 6. Detect duplicated code.
+          VALIDATE_JSCPD: true
+
+          # 7. Check shell script formatting.
+          VALIDATE_SHELL_SHFMT: true
+
+          # Automatically fix shell formatting.
+          FIX_SHELL_SHFMT: true
