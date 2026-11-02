@@ -94,3 +94,4 @@ Display the help message:
 ## Author
 
 Created as a Bash programming project for learning and practising Linux terminal commands, shell scripting, and Git/GitHub.
+# backup-project
